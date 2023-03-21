@@ -3,7 +3,7 @@ import { join } from 'path';
 import * as util from 'util';
 
 const env: NodeJS.ProcessEnv = process.env;
-config({ path: join(__dirname, '../../../src/.env') });
+config({ path: join(__dirname, '../../../.env') });
 
 const isProdEnv = env.NODE_ENV === 'production';
 const isTestEnv = env.NODE_ENV === 'test';
@@ -17,6 +17,13 @@ const APP_CONFIG = {
   },
   port: Number(env.PORT) || 3000,
   apiPrefix: env.API_PREFIX,
+  swagger: {
+    enabled: parseBool(env.SWAGGER_ENABLED, !isProdEnv),
+    prefix: env.SWAGGER_PREFIX || '1.0',
+    version: env.SWAGGER_VERSION || 'docs',
+    title: env.SWAGGER_TITLE,
+    description: env.SWAGGER_DESCRIPTION,
+  },
 };
 
 if (isDevEnv) {
