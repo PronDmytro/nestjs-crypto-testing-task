@@ -3,15 +3,24 @@ import { LoggerModule } from 'nestjs-pino';
 import { PINO_LOGGER_CONFIG } from './core/configs/pino-logger.config';
 import { CurrencyPairModule } from './modules/currency-pair/currency-pair.module';
 import { PrismaModule } from './core/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
 
 @Module({
   imports: [
     LoggerModule.forRoot(PINO_LOGGER_CONFIG),
     CurrencyPairModule,
     PrismaModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {
 }

@@ -26,6 +26,13 @@ const APP_CONFIG = {
   },
   wsApiUrl: env.WS_API_URL,
   assetPairsEndpointUrl: env.ASSET_PAIRS_ENDPOINT_URL,
+  bcryptSalt: env.BCRYPT_SALT,
+  jwt: {
+    secret: env.JWT_SECRET,
+    signOptions: {
+      expiresIn: env.JWT_EXPIPES_TIME,
+    },
+  },
 };
 
 if (isDevEnv) {

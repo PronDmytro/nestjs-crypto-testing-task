@@ -3,6 +3,7 @@ import { CurrencyPairService } from './currency-pair.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrencyPairParamsReqDto } from './dto/currency-pair-params.req.dto';
 import { CurrencyPairValueResDto } from './dto/currency-pair-value.res.dto';
+import { Public } from '../../shared/decorators/public.decorator';
 
 @ApiTags('Currency Pair')
 @Controller('currency-pair')
@@ -13,6 +14,7 @@ export class CurrencyPairController {
   ) {
   }
 
+  @Public()
   @Get()
   public async getPairs(@Query() { pairs }: CurrencyPairParamsReqDto): Promise<CurrencyPairValueResDto[]> {
     const result: CurrencyPairValueResDto[] = [];
