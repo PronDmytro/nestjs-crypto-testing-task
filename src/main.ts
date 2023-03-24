@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import APP_CONFIG from './core/configs/app.config';
 import { Logger } from 'nestjs-pino';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +24,12 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, documentConfig);
     SwaggerModule.setup(swaggerConfig.prefix, app, document, { swaggerOptions: { persistAuthorization: true } });
   }
+
+  app.useGlobalPipes(new ValidationPipe({
+    disableErrorMessages: false,
+    whitelist: true,
+    transform: true,
+  }));
 
   await app.listen(APP_CONFIG.port);
 }

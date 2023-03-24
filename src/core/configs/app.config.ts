@@ -24,6 +24,8 @@ const APP_CONFIG = {
     title: env.SWAGGER_TITLE,
     description: env.SWAGGER_DESCRIPTION,
   },
+  wsApiUrl: env.WS_API_URL,
+  assetPairsEndpointUrl: env.ASSET_PAIRS_ENDPOINT_URL,
 };
 
 if (isDevEnv) {
