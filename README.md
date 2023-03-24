@@ -1,5 +1,7 @@
 # nestjs-crypto-testing-task
 
+[![wakatime](https://wakatime.com/badge/user/7b7dbb15-3b2f-402d-919d-9bec33604d97/project/29e669a8-4154-4583-b8ac-13769b08ea79.svg)](https://wakatime.com/badge/user/7b7dbb15-3b2f-402d-919d-9bec33604d97/project/29e669a8-4154-4583-b8ac-13769b08ea79)
+
 ## Prerequisites:
 
 - terminal: git bash / wsl2
