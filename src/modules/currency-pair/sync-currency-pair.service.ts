@@ -6,6 +6,7 @@ import { IAssetPairs } from '../../shared/interfaces/asset-pairs.interface';
 import { CryptoCurrencyEnum } from '../../shared/enums/crypto-currency.enum';
 import { FiatCurrencyEnum } from '../../shared/enums/fiat-currency.enum';
 import { Prisma } from '@prisma/client';
+import APP_CONFIG from '../../core/configs/app.config';
 
 @Injectable()
 export class SyncCurrencyPairService implements OnModuleInit {
@@ -32,7 +33,7 @@ export class SyncCurrencyPairService implements OnModuleInit {
   }
 
   private _fetchAllPairs(): Observable<IAssetPairs> {
-    return this._httpService.get<{ result: IAssetPairs }>('')
+    return this._httpService.get<{ result: IAssetPairs }>(APP_CONFIG.assetPairsEndpointUrl)
       .pipe(map(({ data }) => data.result));
   }
 

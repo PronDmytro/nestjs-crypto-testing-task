@@ -1,7 +1,4 @@
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER');
-
--- CreateEnum
 CREATE TYPE "Crypto" AS ENUM ('XBT', 'BCH', 'ETH');
 
 -- CreateEnum
@@ -13,7 +10,6 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT,
-    "role" "UserRole" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -24,6 +20,17 @@ CREATE TABLE "Valet" (
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Valet_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Asset" (
+    "id" SERIAL NOT NULL,
+    "pairId" INTEGER NOT NULL,
+    "valetId" INTEGER NOT NULL,
+    "count" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "cost" DOUBLE PRECISION NOT NULL DEFAULT 0,
+
+    CONSTRAINT "Asset_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -45,7 +52,19 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Valet_userId_key" ON "Valet"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Asset_pairId_key" ON "Asset"("pairId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Asset_valetId_key" ON "Asset"("valetId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "CurrencyPair_name_key" ON "CurrencyPair"("name");
 
 -- AddForeignKey
 ALTER TABLE "Valet" ADD CONSTRAINT "Valet_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Asset" ADD CONSTRAINT "Asset_pairId_fkey" FOREIGN KEY ("pairId") REFERENCES "CurrencyPair"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Asset" ADD CONSTRAINT "Asset_valetId_fkey" FOREIGN KEY ("valetId") REFERENCES "Valet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

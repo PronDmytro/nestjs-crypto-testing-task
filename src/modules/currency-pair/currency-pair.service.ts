@@ -30,6 +30,13 @@ export class CurrencyPairService {
     await this._prisma.currencyPair.update({ where: { name }, data: { value } });
   }
 
+  public async getPairValueById(id: number): Promise<number> {
+    return (await this._prisma.currencyPair.findFirst({
+      where: { id },
+      select: { value: true },
+    })).value;
+  }
+
   public async getAllPairsNames(): Promise<string[]> {
     const pairs = await this._prisma.currencyPair.findMany({ select: { name: true } });
     return pairs.map(({ name }) => name);

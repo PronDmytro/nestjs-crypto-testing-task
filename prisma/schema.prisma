@@ -15,13 +15,24 @@ model User {
   email    String  @unique
   password String
   name     String?
-  Valet    Valet?
+  valet    Valet?
 }
 
 model Valet {
-  id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id     Int     @id @default(autoincrement())
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @unique
+  assets Asset[]
+}
+
+model Asset {
+  id      Int          @id @default(autoincrement())
+  pair    CurrencyPair @relation(fields: [pairId], references: [id])
+  pairId  Int          @unique
+  valet   Valet        @relation(fields: [valetId], references: [id])
+  valetId Int          @unique
+  count   Float        @default(0)
+  cost    Float        @default(0)
 }
 
 model CurrencyPair {
@@ -31,6 +42,7 @@ model CurrencyPair {
   fiat    Fiat
   value   Float   @default(0)
   deleted Boolean @default(false)
+  asset   Asset[]
 }
 
 enum Crypto {

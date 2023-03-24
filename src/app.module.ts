@@ -6,13 +6,17 @@ import { PrismaModule } from './core/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
+import { ValetModule } from './modules/valet/valet.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     LoggerModule.forRoot(PINO_LOGGER_CONFIG),
+    ScheduleModule.forRoot(),
     CurrencyPairModule,
     PrismaModule,
     AuthModule,
+    ValetModule,
   ],
   controllers: [],
   providers: [

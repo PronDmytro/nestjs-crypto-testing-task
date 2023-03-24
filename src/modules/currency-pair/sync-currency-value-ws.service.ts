@@ -16,7 +16,7 @@ export class SyncCurrencyValueWsService {
   }
 
   private async _initWs(): Promise<void> {
-    this._ws.on('open', async (e) => {
+    this._ws.on('open', async () => {
       const pairs = await this._currencyPairService.getAllPairsNames();
       this._send({
         event: 'subscribe',
