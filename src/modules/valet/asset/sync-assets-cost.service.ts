@@ -24,7 +24,8 @@ export class SyncAssetsCostService {
   private async syncAssetsCost(): Promise<void> {
     const assets = await this._assetService.getAllAssets();
     for (const asset of assets) {
-      const pairVal = await this._currencyPairService.getPairValueById(asset.pairId);
+      const { name: pairName } = await this._currencyPairService.getPairById(asset.pairId);
+      const pairVal = await this._currencyPairService.getPairValueByName(pairName);
       const cost = asset.count * pairVal;
       await this._assetService.changeAssetCostById(asset.id, cost);
     }

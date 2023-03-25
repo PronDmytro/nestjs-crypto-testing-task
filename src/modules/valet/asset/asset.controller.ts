@@ -22,7 +22,8 @@ export class AssetController {
   public async createAsset(
     @Body() { pairId, valetId, count }: CreateAssetReqDto,
   ): Promise<void> {
-    const currencyPairVal = await this._currencyPairService.getPairValueById(pairId);
+    const { name: pairName } = await this._currencyPairService.getPairById(pairId);
+    const currencyPairVal = await this._currencyPairService.getPairValueByName(pairName);
     const cost = count * currencyPairVal;
     await this._assetService.createAsset({
       valet: { connect: { id: valetId } },

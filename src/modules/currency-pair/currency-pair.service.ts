@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { CurrencyPairValueResDto } from './dto/currency-pair-value.res.dto';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 
 @Injectable()
 export class CurrencyPairService {
 
   constructor(
     private readonly _prisma: PrismaService,
+    @InjectRedis()
+    private readonly redis: Redis,
   ) {
   }
 
@@ -16,10 +20,8 @@ export class CurrencyPairService {
   }
 
   public async getPairByName(name: string): Promise<CurrencyPairValueResDto> {
-    return this._prisma.currencyPair.findFirst({
-      where: { name, deleted: false },
-      select: { name: true, value: true },
-    });
+    const value = +await this.redis.get(name);
+    return { name, value };
   }
 
   public async getCountAllPairs(): Promise<number> {
@@ -27,14 +29,18 @@ export class CurrencyPairService {
   }
 
   public async updatePairValue(name: string, value: number): Promise<void> {
-    await this._prisma.currencyPair.update({ where: { name }, data: { value } });
+    await this.redis.set(name, value);
   }
 
-  public async getPairValueById(id: number): Promise<number> {
-    return (await this._prisma.currencyPair.findFirst({
+  public async getPairById(id: number) {
+    return this._prisma.currencyPair.findFirst({
       where: { id },
-      select: { value: true },
-    })).value;
+      select: { name: true },
+    });
+  }
+
+  public async getPairValueByName(name: string): Promise<number> {
+    return +await this.redis.get(name);
   }
 
   public async getAllPairsNames(): Promise<string[]> {
